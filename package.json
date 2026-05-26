@@ -1,0 +1,51 @@
+{
+  "name": "@mri-bot/MODULE_NAME",
+  "version": "1.0.0",
+  "description": "Módulo MODULE_NAME do MRI Bot",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --project tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "jest",
+    "test:coverage": "jest --coverage"
+  },
+  "jest": {
+    "moduleFileExtensions": ["js", "json", "ts"],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": ["ts-jest", { "tsconfig": "tsconfig.test.json" }]
+    },
+    "collectCoverageFrom": ["**/*.ts", "!**/index.ts", "!**/*.d.ts"],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^11",
+    "@nestjs/core": "^11"
+  },
+  "devDependencies": {
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/core": "^11.0.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^22.0.0",
+    "jest": "^30.4.2",
+    "reflect-metadata": "^0.2.0",
+    "ts-jest": "^29.4.11",
+    "typescript": "~6.0.3"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}

@@ -1,0 +1,24 @@
+# Lista de repos consumidores e arquivos a sincronizar.
+# Adicione novos repos à lista `repos` quando criar um módulo novo.
+# O workflow template-sync.yml abrirá PRs automáticos quando esses
+# arquivos mudarem no template.
+
+group:
+  - files:
+      - source: .gitignore
+        dest: .gitignore
+      - source: .npmrc
+        dest: .npmrc
+      - source: tsconfig.json
+        dest: tsconfig.json
+      - source: tsconfig.build.json
+        dest: tsconfig.build.json
+      - source: tsconfig.test.json
+        dest: tsconfig.test.json
+      - source: .github/workflows/ci.yml
+        dest: .github/workflows/ci.yml
+      - source: .github/workflows/publish.yml
+        dest: .github/workflows/publish.yml
+    repos: |
+      MRI-Bot/mri-guards
+      MRI-Bot/mri-fivem
