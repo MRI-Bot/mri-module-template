@@ -14,21 +14,68 @@ on:
       - '.github/sync.yml'
       - '.github/workflows/ci.yml'
       - '.github/workflows/publish.yml'
-  workflow_dispatch: # permite trigger manual via GitHub UI
+  workflow_dispatch:
 
 jobs:
   sync:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+    strategy:
+      fail-fast: false
+      matrix:
+        repo:
+          - MRI-Bot/mri-guards
+          - MRI-Bot/mri-fivem
 
-      - name: Sync files to consumer repos
-        uses: BetaHuhn/repo-file-sync-action@v1
+    steps:
+      - name: Checkout template
+        uses: actions/checkout@v4
         with:
-          GH_PAT: ${{ secrets.SYNC_TOKEN }}
-          # SYNC_TOKEN: PAT com escopo repo nas orgs necessárias.
-          # Criar em: https://github.com/settings/tokens
-          # Adicionar como secret em Settings > Secrets > Actions
-          PR_LABELS: 'template-sync,automated'
-          COMMIT_BODY: 'Sync automático via mri-module-template'
-          PR_TITLE: 'chore: sync template files'
+          path: template
+
+      - name: Clone consumer repo
+        env:
+          GH_TOKEN: ${{ secrets.SYNC_TOKEN }}
+        run: |
+          git clone \
+            https://x-access-token:${GH_TOKEN}@github.com/${{ matrix.repo }}.git \
+            consumer
+          git -C consumer config user.email "github-actions[bot]@users.noreply.github.com"
+          git -C consumer config user.name "github-actions[bot]"
+
+      - name: Copy shared files
+        run: |
+          cp template/.gitignore         consumer/.gitignore
+          cp template/.npmrc             consumer/.npmrc
+          cp template/tsconfig.json      consumer/tsconfig.json
+          cp template/tsconfig.build.json consumer/tsconfig.build.json
+          cp template/tsconfig.test.json  consumer/tsconfig.test.json
+          mkdir -p consumer/.github/workflows
+          cp template/.github/workflows/ci.yml      consumer/.github/workflows/ci.yml
+          cp template/.github/workflows/publish.yml consumer/.github/workflows/publish.yml
+
+      - name: Open PR if there are changes
+        env:
+          GH_TOKEN: ${{ secrets.SYNC_TOKEN }}
+        run: |
+          cd consumer
+
+          # Nada mudou — sai silenciosamente
+          if git diff --quiet; then
+            echo "Sem alterações em ${{ matrix.repo }}, pulando."
+            exit 0
+          fi
+
+          BRANCH="template-sync/$(date +%Y%m%d-%H%M%S)"
+          git checkout -b "$BRANCH"
+          git add -A
+          git commit -m "chore: sync template files from mri-module-template"
+          git push \
+            https://x-access-token:${GH_TOKEN}@github.com/${{ matrix.repo }}.git \
+            "$BRANCH"
+
+          gh pr create \
+            --repo ${{ matrix.repo }} \
+            --head "$BRANCH" \
+            --base main \
+            --title "chore: sync template files" \
+            --body "Sync automático a partir de [mri-module-template](https://github.com/MRI-Bot/mri-module-template). Merge quando conveniente."
