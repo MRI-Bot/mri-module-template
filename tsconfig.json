@@ -16,5 +16,9 @@
     "sourceMap": true,
     "outDir": "./dist"
   },
-  "include": ["src", "index.ts"]
+  "include": ["src", "index.ts"],
+  // Specs são type-checados pelo ts-jest (tsconfig.test.json, com types jest) no
+  // `test`/`test:coverage`. Excluí-los do `typecheck` (tsc --noEmit) evita o erro
+  // "Cannot find name 'describe'/'expect'" — o tsc base não auto-inclui @types/jest.
+  "exclude": ["**/*.spec.ts"]
 }
