@@ -86,11 +86,11 @@ para forçar a sincronização sem alterar nenhum arquivo.
 
 ```
 mri-<nome>/
+├── index.ts               # barrel: exports públicos — fica na RAIZ ✏️
 ├── src/
 │   ├── <nome>.module.ts
 │   ├── <nome>.service.ts
-│   ├── <nome>.service.spec.ts
-│   └── index.ts
+│   └── <nome>.service.spec.ts
 ├── .github/
 │   └── workflows/         # gerenciados pelo template — não editar
 ├── .gitignore             # gerenciado pelo template — não editar
@@ -100,3 +100,8 @@ mri-<nome>/
 ├── tsconfig.test.json     # gerenciado pelo template — não editar
 └── package.json           # específico do módulo ✏️
 ```
+
+> **Barrel na raiz (`index.ts`), não em `src/`.** O `include` do `tsconfig` é
+> `["src", "index.ts"]`: com o barrel na raiz, o `rootDir` inferido é a raiz e a
+> saída cai certinho em `dist/index.js`. Um barrel em `src/index.ts` faria o
+> `rootDir` colapsar pra `./src` e o TypeScript 6 aborta com `TS5011` no build.

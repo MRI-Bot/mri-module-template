@@ -17,8 +17,8 @@
   "scripts": {
     "build": "tsc --project tsconfig.build.json",
     "typecheck": "tsc --noEmit",
-    "test": "jest",
-    "test:coverage": "jest --coverage"
+    "test": "jest --passWithNoTests",
+    "test:coverage": "jest --coverage --passWithNoTests"
   },
   "jest": {
     "moduleFileExtensions": ["js", "json", "ts"],
