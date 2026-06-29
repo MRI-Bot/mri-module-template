@@ -20,5 +20,9 @@ group:
       - source: .github/workflows/publish.yml
         dest: .github/workflows/publish.yml
     repos: |
-      MRI-Bot/mri-guards
       MRI-Bot/mri-fivem
+      MRI-Bot/mri-permissions
+      MRI-Bot/mri-admin
+      MRI-Bot/mri-mta
+      MRI-Bot/mri-voice
+      MRI-Bot/mri-guards
