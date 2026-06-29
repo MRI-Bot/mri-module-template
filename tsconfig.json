@@ -10,6 +10,11 @@
     "strictNullChecks": true,
     "noImplicitAny": true,
     "skipLibCheck": true,
+    // Inclui os globals do Node (process/Buffer/fetch/...) no typecheck. Sob
+    // pnpm o tsc não auto-inclui node_modules/@types/node de forma confiável,
+    // então módulos que usam globals do Node (não só `import from 'fs'`)
+    // estouram "Cannot find name 'process'". Explícito resolve pra todos.
+    "types": ["node"],
     "ignoreDeprecations": "6.0",
     "esModuleInterop": true,
     "declaration": true,
