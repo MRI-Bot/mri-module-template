@@ -23,8 +23,11 @@ jobs:
       fail-fast: false
       matrix:
         repo:
-          - MRI-Bot/mri-guards
+          # Só repos em pnpm (o template é pnpm). mri-mta/mri-voice/mri-guards
+          # entram após migrarem npm->pnpm. Mantenha em sync com .github/sync.yml.
           - MRI-Bot/mri-fivem
+          - MRI-Bot/mri-permissions
+          - MRI-Bot/mri-admin
 
     steps:
       - name: Checkout template

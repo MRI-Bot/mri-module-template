@@ -19,6 +19,9 @@ group:
         dest: .github/workflows/ci.yml
       - source: .github/workflows/publish.yml
         dest: .github/workflows/publish.yml
+    # Só repos já em pnpm (o template é pnpm). mri-mta, mri-voice e mri-guards
+    # entram aqui depois de migrarem npm->pnpm (gerar pnpm-lock.yaml).
     repos: |
-      MRI-Bot/mri-guards
       MRI-Bot/mri-fivem
+      MRI-Bot/mri-permissions
+      MRI-Bot/mri-admin
