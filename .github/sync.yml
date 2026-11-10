@@ -26,3 +26,5 @@ group:
       MRI-Bot/mri-mta
       MRI-Bot/mri-voice
       MRI-Bot/mri-guards
+      MRI-Bot/mri-nickname
+      MRI-Bot/mri-i18n
